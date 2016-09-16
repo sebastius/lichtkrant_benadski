@@ -223,9 +223,11 @@ void bamtext(char * bericht, char programma, byte color) {
   verstuurbericht(sync);
   verstuurbyte(0xBB);
   programmakeuze('A');
+  snelheid(4);
   verstuurbyte(0x8B);
   verstuurbyte(0x03);
   verstuurtext(bericht, color);
+  Wachten(3);
   verstuurbericht(endprogram);
 }
 
@@ -241,6 +243,7 @@ void hoofdprogramma() {
 
 void setup() {
   // put your setup code here, to run once:
+  
   bamtext("Booting",  'A', blackred);
   chipid = ESP.getChipId();
   chipid.toCharArray(chipidchar, sizeof chipidchar);
@@ -257,8 +260,8 @@ void setup() {
   bamtext("mounting FS...", 'A', blackred);
 
   if (SPIFFS.begin()) {
-    Serial.println("mounted file system");
-    bamtext("mounted file system",  'A', blackred);
+    Serial.println("mounted fs");
+    bamtext("mounted fs",  'A', blackred);
     if (SPIFFS.exists("/config.json")) {
       //file exists, reading and loading
       Serial.println("reading config file");
@@ -291,8 +294,8 @@ void setup() {
       }
     }
   } else {
-    Serial.println("failed to mount FS");
-    bamtext("failed to mount FS",  'A', blackred);
+    Serial.println("failed 2 mount FS");
+    bamtext("failed 2 mnt FS",  'A', blackred);
   }
 
   pinMode(Button, INPUT);
@@ -310,7 +313,7 @@ void setup() {
 
   if (!wifiManager.autoConnect("AutoConnectAP", "password")) {
     Serial.println("failed to connect and hit timeout");
-    bamtext("failed to connect and hit timeout",  'A', blackred);
+    bamtext("failed 2 connect",  'A', blackred);
     delay(3000);
     //reset and try again, or maybe put it to deep sleep
     ESP.reset();
@@ -319,7 +322,7 @@ void setup() {
 
   //if you get here you have connected to the WiFi
   Serial.println("connected...yeey :)");
-  bamtext("connected...yeey :)",  'A', blackred);
+  bamtext("connected!",  'A', blackred);
 
   updateParameters();
 
