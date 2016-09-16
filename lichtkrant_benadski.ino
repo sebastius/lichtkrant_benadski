@@ -138,7 +138,7 @@ void snelheid(byte snelheid) {
   verstuurbyte(snelheid + 30);
 }
 
-void effectje(char programma, char parameter){
+void effectje(char programma, char parameter) {
   verstuurbyte(programma);
   verstuurbyte(parameter);
 }
@@ -169,6 +169,7 @@ void verstuurbyte(byte data) {
 }
 
 void klokinstellen(time_t t) {
+  Serial.println("Klok Instellen");
   verstuurbericht(sync);
   verstuurbyte(0xBE);
   verstuurbyte(0x33);
@@ -243,7 +244,7 @@ void hoofdprogramma() {
 
 void setup() {
   // put your setup code here, to run once:
-  
+
   bamtext("Booting",  'A', blackred);
   chipid = ESP.getChipId();
   chipid.toCharArray(chipidchar, sizeof chipidchar);
@@ -265,11 +266,11 @@ void setup() {
     if (SPIFFS.exists("/config.json")) {
       //file exists, reading and loading
       Serial.println("reading config file");
-      bamtext("reading config file",  'A', blackred);
+      bamtext("reading config",  'A', blackred);
       File configFile = SPIFFS.open("/config.json", "r");
       if (configFile) {
         Serial.println("opened config file");
-        bamtext("opened config file",  'A', blackred);
+        bamtext("opened config",  'A', blackred);
         size_t size = configFile.size();
         // Allocate a buffer to store contents of the file.
         std::unique_ptr<char[]> buf(new char[size]);
@@ -340,6 +341,15 @@ void setup() {
 
   udp.begin(localPort);
   ntpsync();
+
+  verstuurbericht(sync);
+  verstuurbyte(0xBB);
+  programmakeuze('A');
+  verstuurtext(" ", blackred);
+  verstuurbyte(0x8F);
+  verstuurbyte(0x01);
+  verstuurtext(" ", blackred);
+  verstuurbericht(endprogram);
 }
 
 
@@ -435,7 +445,7 @@ boolean reconnect() {
     client.subscribe("revspace/button/#");
     client.subscribe("revspace/state");
     client.subscribe("revspace/sensors/temperature/11/1");
-    
+
     client.loop();
   }
   return client.connected();
