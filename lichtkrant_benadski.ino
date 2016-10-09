@@ -233,12 +233,30 @@ void bamtext(char * bericht, char programma, byte color) {
 }
 
 void hoofdprogramma() {
+  int color = blackred;
   verstuurbericht(sync);
   verstuurbyte(0xBB);
   programmakeuze('A');
+//  verstuurbyte(0x8B);
+//  verstuurbyte(0x03);
+//  verstuurtext("progA", color);
+//  Wachten(3);
   Gosub('B');
   Gosub('C');
   Gosub('D');
+  programmakeuze('B');
+  verstuurbyte(0x8F);
+  verstuurbyte(0x07);
+  //Wachten(3);
+  programmakeuze('C');
+  verstuurbyte(0x8F);
+  verstuurbyte(0x06);
+  //Wachten(3);
+  programmakeuze('D');
+  verstuurbyte(0x8F);
+  verstuurbyte(0x05);
+  //Wachten(3);
+
   verstuurbericht(endprogram);
 }
 
@@ -341,15 +359,19 @@ void setup() {
 
   udp.begin(localPort);
   ntpsync();
+  delay(500);
+  hoofdprogramma();
+  delay(500);
 
-  verstuurbericht(sync);
-  verstuurbyte(0xBB);
-  programmakeuze('A');
-  verstuurtext(" ", blackred);
-  verstuurbyte(0x8F);
-  verstuurbyte(0x01);
-  verstuurtext(" ", blackred);
-  verstuurbericht(endprogram);
+  hoofdprogramma();
+  //  verstuurbericht(sync);
+  //  verstuurbyte(0xBB);
+  //  programmakeuze('A');
+  //  verstuurtext(" test ", blackred);
+  //  verstuurbyte(0x8F);
+  //  verstuurbyte(0x01);
+  //  verstuurtext(" ", blackred);
+  //  verstuurbericht(endprogram);
 }
 
 
