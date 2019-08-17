@@ -129,7 +129,7 @@ const char endprogram[] = {
 
 void snelheid(byte snelheid) {
   verstuurbyte(0xA0);
-  if (snelheid = 0) {
+  if (snelheid < 1) {
     snelheid = 1;
   }
   if (snelheid > 9) {
@@ -155,7 +155,7 @@ void Gosub(char programma) {
 
 void Wachten(byte tijd) {
   verstuurbyte(0xA1);
-  if (tijd = 0) {
+  if (tijd < 1) {
     tijd = 1;
   }
   if (tijd > 9) {
